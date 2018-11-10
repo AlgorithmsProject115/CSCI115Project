@@ -20,15 +20,15 @@ SumEqualsX (x)
 Better Algorithm
 ----------------
 
-Time Complexity O(NlogN)
-	Assuming an input insensitive comparison based sorting algorithm, the time complexity for sort will be NlogN. 
-	The for loop iterates over each element in the set, taking N comparisons, and BinarySearch takes logN comparisons N times. Thus, the result is NlogN
-	Since the operations are not nested, this becomes O(NlogN + NlogN) = O(NlogN).
+Time Complexity O(N)
+	
+	It takes O(N) steps amortized/with an effective hash function to insert N integers in a hash table.
+	The for loop then iterates over N elements, and with an amortized worst case Search() cost of O(1), the result of the entire algorithm is O(N+N*1) = O(N)
 
 SumEqualsX (x)
-	sort(set)
+	store set in hash table
 	for i <- all integers in set
-		if( BinarySearch(x - i, set) )
+		if( Search(x - i, set) )
 			return true
 	return false
 
