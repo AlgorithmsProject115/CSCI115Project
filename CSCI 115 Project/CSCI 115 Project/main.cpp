@@ -1,4 +1,4 @@
-
+#include "sort_algs.h"
 //Part 2
 
 /*
@@ -33,3 +33,7 @@ SumEqualsX (x)
 	return false
 
 */
+
+int main() {
+	//system("pause");
+}
