@@ -89,7 +89,7 @@ TEST_CASE( "bubble sort" ) {
 
     SECTION( "sorts non-empty sorted vector" ) {
         std::vector<int> vec = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-        insertion_sort(vec.begin(), vec.end());
+        bubble_sort(vec.begin(), vec.end());
         REQUIRE(std::is_sorted(vec.begin(), vec.end()));
     }
 
