@@ -1,4 +1,10 @@
 #include "sort_algs.h"
+
+// When RUN_UNIT_TESTS is defined, compiling the program will compile the
+// unit tests. Then running the resulting executable will run the unit tests.
+// Comment this line out to compile the normal program instead.
+#define RUN_UNIT_TESTS
+
 //Part 2
 
 /*
@@ -15,12 +21,12 @@ SumEqualsX (x)
 			if(i + j == x)
 				return true
 	return false
-
-----------------
-Better Algorithm
-----------------
-
-Time Complexity O(N)
+U
+U
+U
+U
+U
+U
 	
 	It takes O(N) steps amortized/with an effective hash function to insert N integers in a hash table.
 	The for loop then iterates over N elements, and with an amortized worst case Search() cost of O(1), the result of the entire algorithm is O(N+N*1) = O(N)
@@ -34,6 +40,11 @@ SumEqualsX (x)
 
 */
 
+#ifdef RUN_UNIT_TESTS
+#	define CATCH_CONFIG_MAIN
+#	include "tests/catch.hpp"
+#else
 int main() {
-	//system("pause");
+	return 0;
 }
+#endif
