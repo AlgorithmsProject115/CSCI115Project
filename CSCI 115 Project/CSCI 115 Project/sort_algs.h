@@ -18,8 +18,8 @@ void exch(GenericIterator i, GenericIterator j) {
  * be comparable with the < operator. 
  * 
  * @param begin iterator pointing to the first element in the range to be
- *              sorted, such as the iterator returnd by std::vector::begin.
- * @peram end   iterator referring to the past-the-end element in the range to
+ *              sorted, such as the iterator returned by std::vector::begin.
+ * @param end   iterator referring to the past-the-end element in the range to
  *              be sorted, such as the iterator returned by std::vector::end.
  */ 
 template <typename GenericIterator>
@@ -45,8 +45,8 @@ void insertion_sort(GenericIterator begin, GenericIterator end) {
  * be comparable with the < operator.
  * 
  * @param begin iterator pointing to the first element in the range to be
- *              sorted, such as the iterator returnd by std::vector::begin.
- * @peram end   iterator referring to the past-the-end element in the range to
+ *              sorted, such as the iterator returned by std::vector::begin.
+ * @param end   iterator referring to the past-the-end element in the range to
  *              be sorted, such as the iterator returned by std::vector::end.
  */ 
 template <typename GenericIterator>
@@ -72,8 +72,8 @@ void selection_sort(GenericIterator begin, GenericIterator end) {
  * be comparable with the < operator. 
  * 
  * @param begin iterator pointing to the first element in the range to be
- *              sorted, such as the iterator returnd by std::vector::begin.
- * @peram end   iterator referring to the past-the-end element in the range to
+ *              sorted, such as the iterator returned by std::vector::begin.
+ * @param end   iterator referring to the past-the-end element in the range to
  *              be sorted, such as the iterator returned by std::vector::end.
  */ 
 template <typename GenericIterator>

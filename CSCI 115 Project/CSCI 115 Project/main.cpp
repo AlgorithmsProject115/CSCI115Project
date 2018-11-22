@@ -21,6 +21,34 @@ SumEqualsX (x)
 			if(i + j == x)
 				return true
 	return false
+*/
+
+/**
+* Searches list and finds if a pair adds up to x
+* GenericIterator must meet the requirements of RandomAccessIterator
+* The type of dereferenced GenericIterator must have the operator + defined 
+* and meet the requirements of EqualityComparable and LessThanComparable.
+*
+* @param begin iterator pointing to the first element in the range such as 
+*              the iterator returned by std::vector::begin.
+*              
+* @param end   iterator referring to the past-the-end element in the range such as 
+*              the iterator returned by std::vector::end.
+*      
+* @param val   iterator referring to value to be compared against
+*/
+
+template <typename GenericIterator>
+bool brute_force_find(GenericIterator begin, GenericIterator end, GenericIterator x) {
+	for (auto i = begin; i < end; ++i) {
+		for (auto j = begin; j < end; ++j) {
+			if (*i + *j == *x)
+				return true;
+		}
+	}
+	return false;
+}
+/*
 U
 U
 U
