@@ -24,7 +24,7 @@ SumEqualsX (x)
 */
 
 /**
-* Searches list and finds if a pair adds up to x
+* Searches list and finds if a pair adds up to val
 * GenericIterator must meet the requirements of RandomAccessIterator
 * The type of dereferenced GenericIterator must have the operator + defined 
 * and meet the requirements of EqualityComparable and LessThanComparable.
@@ -39,10 +39,10 @@ SumEqualsX (x)
 */
 
 template <typename GenericIterator>
-bool brute_force_find(GenericIterator begin, GenericIterator end, GenericIterator x) {
+bool brute_force_find(GenericIterator begin, GenericIterator end, GenericIterator val) {
 	for (auto i = begin; i < end; ++i) {
 		for (auto j = begin; j < end; ++j) {
-			if (*i + *j == *x)
+			if (*i + *j == *val)
 				return true;
 		}
 	}
