@@ -36,14 +36,14 @@ SumEqualsX (x)
 * @param end   iterator referring to the past-the-end element in the range such as 
 *              the iterator returned by std::vector::end.
 *      
-* @param val   iterator referring to value to be compared against
+* @param val  Type matching dereferenced iterator referring to value to be compared against
 */
 
-template <typename GenericIterator>
-bool brute_force_find(GenericIterator begin, GenericIterator end, GenericIterator val) {
+template <typename GenericIterator, typename T = typename std::remove_reference<decltype(*GenericIterator().p)>::type>
+bool brute_force_find(GenericIterator begin, GenericIterator end, T val) {
 	for (auto i = begin; i < end; ++i) {
-		for (auto j = begin; j < end; ++j) {
-			if (*i + *j == *val)
+		for (auto j = i + 1; j < end; ++j) {
+			if (*i + *j == val)
 				return true;
 		}
 	}
@@ -82,18 +82,19 @@ SumEqualsX (x)
 * @param end   iterator referring to the past-the-end element in the range such as
 *              the iterator returned by std::vector::end.
 *
-* @param val   iterator referring to value to be compared against
+* @param val   Type matching dereferenced iterator referring to value to be compared against
 */
-template <typename GenericIterator>
-bool hash_find(GenericIterator begin, GenericIterator end, GenericIterator val) {
+template <typename GenericIterator, typename T = typename std::remove_reference<decltype(*GenericIterator().p)>::type>
+bool hash_find(GenericIterator begin, GenericIterator end, T val) {
 
-	std::unordered_set<*GenericIterator> hashtable;
+	std::unordered_set<T> hashtable;
 	for (auto it = begin; it != end(); ++it) {
 		hashtable.insert(*it);
 	}
 
 	for (auto it = begin; it != end(); ++it) {
-		if (hashtable.find(*x - *it)) {
+		auto result = hashtable.find(val - *it);
+		if (result != hashtable.end() && result != it) {						//modified to prevent double counting
 			return true;
 		}
 	}
