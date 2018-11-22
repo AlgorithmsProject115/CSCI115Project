@@ -1,4 +1,5 @@
 #include "sort_algs.h"
+#include <unordered_set>
 
 // When RUN_UNIT_TESTS is defined, compiling the program will compile the
 // unit tests. Then running the resulting executable will run the unit tests.
@@ -24,7 +25,7 @@ SumEqualsX (x)
 */
 
 /**
-* Searches list and finds if a pair adds up to val
+* Searches list and finds if a pair adds up to val by checking each pair
 * GenericIterator must meet the requirements of RandomAccessIterator
 * The type of dereferenced GenericIterator must have the operator + defined 
 * and meet the requirements of EqualityComparable and LessThanComparable.
@@ -68,11 +69,44 @@ SumEqualsX (x)
 
 */
 
+/**
+* Searches list and finds if a pair adds up to val by inserting into hash
+* table and searching for matches
+* GenericIterator must meet the requirements of RandomAccessIterator
+* The type of dereferenced GenericIterator must have the operator + defined
+* and meet the requirements of EqualityComparable and LessThanComparable.
+*
+* @param begin iterator pointing to the first element in the range such as
+*              the iterator returned by std::vector::begin.
+*
+* @param end   iterator referring to the past-the-end element in the range such as
+*              the iterator returned by std::vector::end.
+*
+* @param val   iterator referring to value to be compared against
+*/
+template <typename GenericIterator>
+bool hash_find(GenericIterator begin, GenericIterator end, GenericIterator val) {
+
+	std::unordered_set<*GenericIterator> hashtable;
+	for (auto it = begin; it != end(); ++it) {
+		hashtable.insert(*it);
+	}
+
+	for (auto it = begin; it != end(); ++it) {
+		if (hashtable.find(*x - *it)) {
+			return true;
+		}
+	}
+	return false;
+}
+
 #ifdef RUN_UNIT_TESTS
 #	define CATCH_CONFIG_MAIN
 #	include "tests/catch.hpp"
 #else
 int main() {
+
+	system("pause");
 	return 0;
 }
 #endif
