@@ -215,6 +215,7 @@ int main() {
 				start = clock();
 				insertion_sort(testCase.begin(), testCase.end());
 				end = clock();
+				break;
 			}
 			case select:
 			{
@@ -222,6 +223,7 @@ int main() {
 				start = clock();
 				selection_sort(testCase.begin(), testCase.end());
 				end = clock();
+				break;
 			}
 			case bubble:
 			{
@@ -229,6 +231,7 @@ int main() {
 				start = clock();
 				bubble_sort(testCase.begin(), testCase.end());
 				end = clock();
+				break;
 			}
 			case merge:
 			{
@@ -236,6 +239,7 @@ int main() {
 				start = clock();
 				merge_sort(testCase.begin(), testCase.end());
 				end = clock();
+				break;
 			}
 			case quick:
 			{
@@ -243,6 +247,7 @@ int main() {
 				// start = clock();
 				// quick_sort(testCase.begin(), testCase.end());
 				// end = clock();
+				break;
 			}
 			case heap:
 			{
@@ -250,6 +255,7 @@ int main() {
 				// start = clock();
 				// heap_sort(heapVect.begin(), heapVect.end());
 				// end = clock();
+				break;
 			}
 		}
 		//print_vector(&testCase);
