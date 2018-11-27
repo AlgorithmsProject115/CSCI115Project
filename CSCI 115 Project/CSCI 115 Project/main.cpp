@@ -1,5 +1,6 @@
 #include "sort_algs.h"
-#include <unordered_set>
+#include <iostream>
+#include <unordered_map>
 
 // When RUN_UNIT_TESTS is defined, compiling the program will compile the
 // unit tests. Then running the resulting executable will run the unit tests.
@@ -87,27 +88,31 @@ SumEqualsX (x)
 template <typename GenericIterator, typename T = typename std::remove_reference<decltype(*GenericIterator().p)>::type>
 bool hash_find(GenericIterator begin, GenericIterator end, T val) {
 
-	std::unordered_set<T> hashtable;
-	for (auto it = begin; it != end(); ++it) {
-		hashtable.insert(*it);
+	std::unordered_map<T,GenericIterator> hashtable;
+	for (auto it = begin; it != end; ++it) {
+		hashtable.insert({{*it, it}});
 	}
 
-	for (auto it = begin; it != end(); ++it) {
+	for (auto it = begin; it != end; ++it) {
 		auto result = hashtable.find(val - *it);
-		if (result != hashtable.end() && result != it) {						//modified to prevent double counting
+		if (result != hashtable.end() && result->second != it) {						//modified to prevent double counting
 			return true;
 		}
 	}
 	return false;
 }
-
+/*
 #ifdef RUN_UNIT_TESTS
 #	define CATCH_CONFIG_MAIN
 #	include "tests/catch.hpp"
 #else
+*/
 int main() {
-
+	//Basic testing
+	//std::vector<int> a = { 1,2 };
+	//std::vector<int> a = { 1,2, 1 };
+	//std::cout << hash_find(a.begin(), a.end(), 2) << std::endl;
 	system("pause");
 	return 0;
 }
-#endif
+//#endif
