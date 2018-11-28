@@ -27,8 +27,7 @@ SumEqualsX (x)
 
 /**
 * Searches list and finds if a pair adds up to val by checking each pair
-* GenericIterator must meet the requirements of RandomAccessIterator
-* The type of dereferenced GenericIterator must have the operator + defined 
+* The type of dereferenced RandomAccessIterator must have the operator + defined 
 * and meet the requirements of EqualityComparable and LessThanComparable.
 *
 * @param begin iterator pointing to the first element in the range such as 
@@ -40,8 +39,8 @@ SumEqualsX (x)
 * @param val  Type matching dereferenced iterator referring to value to be compared against
 */
 
-template <typename GenericIterator, typename T = typename std::remove_reference<decltype(*GenericIterator().p)>::type>
-bool brute_force_find(GenericIterator begin, GenericIterator end, T val) {
+template <typename RandomAccessIterator, typename T = typename std::remove_reference<decltype(*RandomAccessIterator().p)>::type>
+bool brute_force_find(RandomAccessIterator begin, RandomAccessIterator end, T val) {
 	for (auto i = begin; i < end; ++i) {
 		for (auto j = i + 1; j < end; ++j) {
 			if (*i + *j == val)
@@ -71,11 +70,9 @@ SumEqualsX (x)
 */
 
 /**
-* Searches list and finds if a pair adds up to val by inserting into hash
-* table and searching for matches
-* GenericIterator must meet the requirements of RandomAccessIterator
-* The type of dereferenced GenericIterator must have the operator + defined
-* and meet the requirements of EqualityComparable and LessThanComparable.
+* Searches list and finds if a pair adds up to val by inserting
+* into hash table and searching for matches. It must meet
+* the requirements of EqualityComparable and LessThanComparable.
 *
 * @param begin iterator pointing to the first element in the range such as
 *              the iterator returned by std::vector::begin.
@@ -85,10 +82,10 @@ SumEqualsX (x)
 *
 * @param val   Type matching dereferenced iterator referring to value to be compared against
 */
-template <typename GenericIterator, typename T = typename std::remove_reference<decltype(*GenericIterator().p)>::type>
-bool hash_find(GenericIterator begin, GenericIterator end, T val) {
+template <typename RandomAccessIterator, typename T = typename std::remove_reference<decltype(*RandomAccessIterator().p)>::type>
+bool hash_find(RandomAccessIterator begin, RandomAccessIterator end, T val) {
 
-	std::unordered_map<T,GenericIterator> hashtable;
+	std::unordered_map<T, RandomAccessIterator> hashtable;
 	for (auto it = begin; it != end; ++it) {
 		hashtable.insert({{*it, it}});
 	}
