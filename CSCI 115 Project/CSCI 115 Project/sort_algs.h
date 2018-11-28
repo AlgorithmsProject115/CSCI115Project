@@ -110,11 +110,11 @@ void bubble_sort(RandomAccessIterator begin, RandomAccessIterator end) {
  * @param rightEnd iterator pointing tothe past-the-end element for the 'right'
  *              range.
  */ 
-template <typename GenericIterator>
-void merge_halves(GenericIterator leftBegin, GenericIterator mid, GenericIterator rightEnd)
+template <typename RandomAccessIterator>
+void merge_halves(RandomAccessIterator leftBegin, RandomAccessIterator mid, RandomAccessIterator rightEnd)
 {
     // Prepare temporary vector and left/right pointers
-    typedef typename std::iterator_traits<GenericIterator>::value_type value_type;
+    typedef typename std::iterator_traits<RandomAccessIterator>::value_type value_type;
     std::vector<value_type> temp;
     auto left = leftBegin;
     auto right = mid;
@@ -145,17 +145,17 @@ void merge_halves(GenericIterator leftBegin, GenericIterator mid, GenericIterato
 /**
  * Sorts the elements in the range [begin, end) in ascending order. 
  * The order of equal elements is not guaranteed to be preserved.
- * GenericIterator must meet the requirements of ValueSwappable and
- * RandomAccessIterator. The type of dereferenced GenericIterator must
- * be comparable with the < operator. 
+ * Iterator must meet the requirements of ValueSwappable . The type 
+ * of dereferenced RandomAccessIterator must be comparable with the
+ *  < operator. 
  * 
  * @param begin iterator pointing to the first element in the range to be
  *              sorted, such as the iterator returned by std::vector::begin.
  * @param end   iterator referring to the past-the-end element in the range to
  *              be sorted, such as the iterator returned by std::vector::end.
  */ 
-template <typename GenericIterator>
-void merge_sort(GenericIterator begin, GenericIterator end)
+template <typename RandomAccessIterator>
+void merge_sort(RandomAccessIterator begin, RandomAccessIterator end)
 {
     auto size = end - begin;
     if (size < 2) return;
