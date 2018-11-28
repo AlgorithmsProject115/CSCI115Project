@@ -3,8 +3,8 @@
 
 #include <vector>
 
-template <typename GenericIterator>
-void exch(GenericIterator i, GenericIterator j) {
+template <typename RandomAccessIterator>
+void exch(RandomAccessIterator i, RandomAccessIterator j) {
     auto tmp = *i;
     *i = *j;
     *j = tmp;
@@ -13,17 +13,16 @@ void exch(GenericIterator i, GenericIterator j) {
 /**
  * Sorts the elements in the range [begin, end) in ascending order. 
  * The order of equal elements is not guaranteed to be preserved.
- * GenericIterator must meet the requirements of ValueSwappable and
- * RandomAccessIterator. The type of dereferenced GenericIterator must
- * be comparable with the < operator. 
+ * Iterators must meet the requirements of ValueSwappable. The type of
+ * dereferenced RandomAccessIterator must be comparable with the < operator. 
  * 
  * @param begin iterator pointing to the first element in the range to be
  *              sorted, such as the iterator returned by std::vector::begin.
  * @param end   iterator referring to the past-the-end element in the range to
  *              be sorted, such as the iterator returned by std::vector::end.
  */ 
-template <typename GenericIterator>
-void insertion_sort(GenericIterator begin, GenericIterator end) {
+template <typename RandomAccessIterator>
+void insertion_sort(RandomAccessIterator begin, RandomAccessIterator end) {
     if (begin == end) return;
 
     for (auto i = begin + 1; i < end; ++i) {
@@ -40,17 +39,16 @@ void insertion_sort(GenericIterator begin, GenericIterator end) {
 /**
  * Sorts the elements in the range [begin, end) in ascending order. 
  * The order of equal elements is not guaranteed to be preserved.
- * GenericIterator must meet the requirements of ValueSwappable and
- * RandomAccessIterator. The type of dereferenced GenericIterator must
- * be comparable with the < operator.
+ * Iterators must meet the requirements of ValueSwappable. The type of
+ * dereferenced RandomAccessIterator must be comparable with the < operator. 
  * 
  * @param begin iterator pointing to the first element in the range to be
  *              sorted, such as the iterator returned by std::vector::begin.
  * @param end   iterator referring to the past-the-end element in the range to
  *              be sorted, such as the iterator returned by std::vector::end.
  */ 
-template <typename GenericIterator>
-void selection_sort(GenericIterator begin, GenericIterator end) {
+template <typename RandomAccessIterator>
+void selection_sort(RandomAccessIterator begin, RandomAccessIterator end) {
     if (begin == end) return;
 
     for (auto i = begin; i < end - 1; ++i) {
@@ -67,17 +65,16 @@ void selection_sort(GenericIterator begin, GenericIterator end) {
 /**
  * Sorts the elements in the range [begin, end) in ascending order. 
  * The order of equal elements is not guaranteed to be preserved.
- * GenericIterator must meet the requirements of ValueSwappable and
- * RandomAccessIterator. The type of dereferenced GenericIterator must
- * be comparable with the < operator. 
+ * Iterators must meet the requirements of ValueSwappable. The type of
+ * dereferenced RandomAccessIterator must be comparable with the < operator. 
  * 
  * @param begin iterator pointing to the first element in the range to be
  *              sorted, such as the iterator returned by std::vector::begin.
  * @param end   iterator referring to the past-the-end element in the range to
  *              be sorted, such as the iterator returned by std::vector::end.
  */ 
-template <typename GenericIterator>
-void bubble_sort(GenericIterator begin, GenericIterator end) {
+template <typename RandomAccessIterator>
+void bubble_sort(RandomAccessIterator begin, RandomAccessIterator end) {
     if (begin == end) return;
 
     bool didSwap = false;
