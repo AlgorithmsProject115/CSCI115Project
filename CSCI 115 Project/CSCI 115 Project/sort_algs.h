@@ -175,6 +175,62 @@ void merge_sort(GenericIterator begin, GenericIterator end)
 
 
 /**
+ * Pivots the range of vec [low, high] on the value of the
+ * high index so that all indices lower than the pivot have
+ * smaller values than pivot and all indices greater than
+ * pivot have larger values than pivot.  Returns the index
+ * of pivot after sorting.
+ * 
+ * @param vec pointer to vector<T> to be sorted.
+ * 
+ * @param low first index of range
+ * 
+ * @param high last index of range
+ */ 
+template <typename T>
+int partition(std::vector<T> vec[], int low, int high)
+{
+    // Using last index as pivot
+    T pivot = (*vec)[high];
+
+    int i = low;
+    for(int j = low; j < high; j++)
+    {
+        if((*vec)[j] <= pivot)
+        {
+            swap(vec, i, j);
+            i++;
+        }
+    }
+
+    swap(vec, i, high);
+    return i;
+}
+
+/**
+ * Sorts the elements in the vector in ascending order. 
+ * T must be comparable with the < operator. 
+ * 
+ * @param vec pointer to vector<T> to be sorted.
+ * 
+ * @param low first index
+ * 
+ * @param high last index
+ */ 
+template <typename T>
+void quick_sort(std::vector<T> vec[], int low, int high)
+{
+    if (low >= high) return;
+    
+    // partition
+    int p = partition(vec, low, high);
+
+    // Quick sort on left and right of partition
+    quick_sort(vec, low, p - 1);
+    quick_sort(vec, p + 1, high);
+}
+
+/**
  * Heapifies the subtree starting at i with heapsize n
  * 
  * @param vec pointer to vector<T> backing heap.
