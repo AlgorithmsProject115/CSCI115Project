@@ -107,7 +107,7 @@ bool hash_find(RandomAccessIterator begin, RandomAccessIterator end, T val) {
 #	include "tests/catch.hpp"
 #else
 
-enum Sort {insert, select, bubble, merge, quick, heap};
+enum class Sort {insert, select, bubble, merge, quick, heap};
 enum Display {second, cycle};
 
 // Displays the sort options and handles user input
@@ -212,7 +212,7 @@ int main() {
 
 		switch(sort)
 		{
-			case insert:
+			case Sort::insert:
 			{
 				// insertion
 				start = clock();
@@ -220,7 +220,7 @@ int main() {
 				end = clock();
 				break;
 			}
-			case select:
+			case Sort::select:
 			{
 				// selection
 				start = clock();
@@ -228,7 +228,7 @@ int main() {
 				end = clock();
 				break;
 			}
-			case bubble:
+			case Sort::bubble:
 			{
 				// bubble
 				start = clock();
@@ -236,7 +236,7 @@ int main() {
 				end = clock();
 				break;
 			}
-			case merge:
+			case Sort::merge:
 			{
 				// merge
 				start = clock();
@@ -244,7 +244,7 @@ int main() {
 				end = clock();
 				break;
 			}
-			case quick:
+			case Sort::quick:
 			{
 				// quick
 				// start = clock();
@@ -252,7 +252,7 @@ int main() {
 				// end = clock();
 				break;
 			}
-			case heap:
+			case Sort::heap:
 			{
 				// heap
 				// start = clock();
