@@ -111,3 +111,111 @@ TEST_CASE( "bubble sort" ) {
         REQUIRE(std::is_sorted(vec.begin(), vec.end()));
     }
 }
+
+// -------------------------------------------------------------
+// Merge-Sort test cases
+// -------------------------------------------------------------
+TEST_CASE( "merge sort" ) {
+
+    SECTION( "sorts empty vector" ) {
+        std::vector<int> vec;
+        merge_sort(vec.begin(), vec.end());
+        REQUIRE(std::is_sorted(vec.begin(), vec.end()));
+    }
+
+    SECTION( "sorts non-empty sorted vector" ) {
+        std::vector<int> vec = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        merge_sort(vec.begin(), vec.end());
+        REQUIRE(std::is_sorted(vec.begin(), vec.end()));
+    }
+
+    SECTION( "sorts non-empty reverse sorted vector" ) {
+        std::vector<int> vec = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
+        merge_sort(vec.begin(), vec.end());
+        REQUIRE(std::is_sorted(vec.begin(), vec.end()));
+    }
+
+    SECTION( "sorts non-empty unsorted vector" ) {
+        std::vector<int> vec = {5, 1, 4, 2, 3, 9, 6, 8, 7, 10};
+        merge_sort(vec.begin(), vec.end());
+        REQUIRE(std::is_sorted(vec.begin(), vec.end()));
+    }
+
+    SECTION( "sorts vector of strings" ) {
+        std::vector<std::string> vec = {"c", "f", "a", "g", "e", "b", "d"};
+        merge_sort(vec.begin(), vec.end());
+        REQUIRE(std::is_sorted(vec.begin(), vec.end()));
+    }
+}
+
+// -------------------------------------------------------------
+// Quick-Sort test cases
+// -------------------------------------------------------------
+TEST_CASE( "quick sort" ) {
+
+    SECTION( "sorts empty vector" ) {
+        std::vector<int> vec;
+        quick_sort(&vec, 0, vec.size() - 1);
+        REQUIRE(std::is_sorted(vec.begin(), vec.end()));
+    }
+
+    SECTION( "sorts non-empty sorted vector" ) {
+        std::vector<int> vec = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        quick_sort(&vec, 0, vec.size() - 1);
+        REQUIRE(std::is_sorted(vec.begin(), vec.end()));
+    }
+
+    SECTION( "sorts non-empty reverse sorted vector" ) {
+        std::vector<int> vec = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
+        quick_sort(&vec, 0, vec.size() - 1);
+        REQUIRE(std::is_sorted(vec.begin(), vec.end()));
+    }
+
+    SECTION( "sorts non-empty unsorted vector" ) {
+        std::vector<int> vec = {5, 1, 4, 2, 3, 9, 6, 8, 7, 10};
+        quick_sort(&vec, 0, vec.size() - 1);
+        REQUIRE(std::is_sorted(vec.begin(), vec.end()));
+    }
+
+    SECTION( "sorts vector of strings" ) {
+        std::vector<std::string> vec = {"c", "f", "a", "g", "e", "b", "d"};
+        quick_sort(&vec, 0, vec.size() - 1);
+        REQUIRE(std::is_sorted(vec.begin(), vec.end()));
+    }
+}
+
+// -------------------------------------------------------------
+// Heap-Sort test cases
+// -------------------------------------------------------------
+TEST_CASE( "heap sort" ) {
+
+    SECTION( "sorts empty vector" ) {
+        std::vector<int> vec;
+        heap_sort<int>(&vec);
+        REQUIRE(std::is_sorted(vec.begin(), vec.end()));
+    }
+
+    SECTION( "sorts non-empty sorted vector" ) {
+        std::vector<int> vec = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        heap_sort<int>(&vec);
+        REQUIRE(std::is_sorted(vec.begin(), vec.end()));
+    }
+
+    SECTION( "sorts non-empty reverse sorted vector" ) {
+        std::vector<int> vec = {10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
+        heap_sort<int>(&vec);
+        REQUIRE(std::is_sorted(vec.begin(), vec.end()));
+    }
+
+    SECTION( "sorts non-empty unsorted vector" ) {
+        std::vector<int> vec = {5, 1, 4, 2, 3, 9, 6, 8, 7, 10};
+        heap_sort<int>(&vec);
+        REQUIRE(std::is_sorted(vec.begin(), vec.end()));
+    }
+
+    SECTION( "sorts vector of strings" ) {
+        std::vector<std::string> vec = {"c", "f", "a", "g", "e", "b", "d"};
+        heap_sort<std::string>(&vec);
+        REQUIRE(std::is_sorted(vec.begin(), vec.end()));
+    }
+}
