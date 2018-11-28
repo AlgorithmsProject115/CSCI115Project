@@ -10,6 +10,14 @@ void exch(GenericIterator i, GenericIterator j) {
     *j = tmp;
 }
 
+template <typename T>
+void swap(std::vector<T> vec[], int i, int j)
+{
+    T temp = (*vec)[i];
+    (*vec)[i] = (*vec)[j];
+    (*vec)[j] = temp;
+}
+
 /**
  * Sorts the elements in the range [begin, end) in ascending order. 
  * The order of equal elements is not guaranteed to be preserved.
@@ -163,6 +171,57 @@ void merge_sort(GenericIterator begin, GenericIterator end)
 
     // merge the two sorted halves
     merge_halves(begin, mid, end);
+}
+
+
+/**
+ * Heapifies the subtree starting at i with heapsize n
+ * 
+ * @param vec pointer to vector<T> backing heap.
+ * 
+ * @param i index of subtree
+ * 
+ * @param n size of heap
+ */ 
+template <typename T>
+void heapify(std::vector<T> vec[], int i, int n)
+{
+    // Get left and right child based on 0-index
+    int l = (2 * i) + 1;
+    int r = (2 * i) + 2;
+    int largest = i;
+
+    if(l <= n && (*vec)[l] > (*vec)[largest]) largest = l;
+    if(r <= n && (*vec)[r] > (*vec)[largest]) largest = r;
+
+    if(largest != i)
+    {
+        // swap the values at i and largest, then restore heap invariant.
+        swap(vec, i, largest);
+        heapify(vec, largest, n);
+    }
+}
+
+/**
+ * Sorts the elements in the vector in ascending order. 
+ * T must be comparable with the < operator. 
+ * 
+ * @param vec pointer to vector<T> to be sorted.
+ */ 
+template <typename T>
+void heap_sort(std::vector<T> vec[])
+{
+    int heapSize = (*vec).size();
+    int firstParent = (heapSize / 2) - 1;
+
+    // Build the heap
+    for(int i = firstParent; i >= 0; i--) heapify(vec, i, heapSize - 1);
+
+    for(int i = heapSize - 1; i > 0; i--)
+    {
+        swap(vec, 0, i);
+        heapify(vec, 0, i-1);
+    }
 }
 
 #endif
