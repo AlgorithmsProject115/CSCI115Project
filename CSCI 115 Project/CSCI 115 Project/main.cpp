@@ -58,9 +58,12 @@ U
 U
 U
 U
-	
+Better Algorithm
+
+Time Complexity: O(N)
 	It takes O(N) steps amortized/with an effective hash function to insert N integers in a hash table.
-	The for loop then iterates over N elements, and with an amortized worst case Search() cost of O(1), the result of the entire algorithm is O(N+N*1) = O(N)
+	The for loop then iterates over N elements, and with an amortized worst case Search() cost of O(1), 
+	the result of the entire algorithm is O(N+N*1) = O(N)
 
 SumEqualsX (x)
 	store set in hash table
@@ -88,15 +91,13 @@ template <typename RandomAccessIterator, typename T = typename std::remove_refer
 bool hash_find(RandomAccessIterator begin, RandomAccessIterator end, T val) {
 
 	std::unordered_map<T, RandomAccessIterator> hashtable;
-	for (auto it = begin; it != end; ++it) {
-		hashtable.insert({{*it, it}});
-	}
 
 	for (auto it = begin; it != end; ++it) {
 		auto result = hashtable.find(val - *it);
 		if (result != hashtable.end() && result->second != it) {						//modified to prevent double counting
 			return true;
 		}
+		hashtable.insert({ {*it, it} });
 	}
 	return false;
 }
@@ -105,13 +106,19 @@ bool hash_find(RandomAccessIterator begin, RandomAccessIterator end, T val) {
 // When RUN_UNIT_TESTS is defined, compiling the program will compile the
 // unit tests. Then running the resulting executable will run the unit tests.
 // Comment this line out to compile the normal program instead.
+
 #ifdef RUN_UNIT_TESTS
 #	define CATCH_CONFIG_MAIN
 #	include "tests/catch.hpp"
 #else
 
 constexpr std::size_t NUM_TRIALS = 10;
+<<<<<<< HEAD
 constexpr std::size_t MAX_INPUT_SIZE = 65536;
+=======
+constexpr std::size_t NUM_INPUT_SIZES = 6;
+std::array<std::size_t, NUM_INPUT_SIZES> input_sizes = {10, 100, 1000, 10000, 100000, 1000000};
+>>>>>>> d65a6294a78ab726dd5321439329d216f64143d7
 
 int main() {
 	std::srand(std::time(nullptr));
