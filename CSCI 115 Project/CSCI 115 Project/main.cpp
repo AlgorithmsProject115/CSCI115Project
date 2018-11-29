@@ -1,14 +1,13 @@
 #include "sort_algs.h"
+#include "benchmark.h"
 #include <unordered_map>
 #include <iostream>
-#include <vector>
+#include <fstream>
+#include <string>
 #include <sstream>
-#include <time.h>
-
-// When RUN_UNIT_TESTS is defined, compiling the program will compile the
-// unit tests. Then running the resulting executable will run the unit tests.
-// Comment this line out to compile the normal program instead.
-#define RUN_UNIT_TESTS
+#include <vector>
+#include <cstdlib>
+#include <ctime>
 
 //Part 2
 
@@ -102,171 +101,82 @@ bool hash_find(RandomAccessIterator begin, RandomAccessIterator end, T val) {
 	return false;
 }
 
+
+// When RUN_UNIT_TESTS is defined, compiling the program will compile the
+// unit tests. Then running the resulting executable will run the unit tests.
+// Comment this line out to compile the normal program instead.
 #ifdef RUN_UNIT_TESTS
 #	define CATCH_CONFIG_MAIN
 #	include "tests/catch.hpp"
 #else
 
-enum class Sort {insert, select, bubble, merge, quick, heap};
-enum Display {second, cycle};
+static void write_to_csv(std::size_t input_size, std::size_t num_trials, BenchmarkResults const &results) {
+	std::ostringstream filename;
+	filename << "N_" << input_size << "_trials_" << num_trials << ".csv";
 
-// Displays the sort options and handles user input
-Sort sort_menu()
-{
-	std::string strInput;
-	int input;
-	
-		std::cout << "Choose a sort:" << std::endl;
-		std::cout << "\t0 - Insert" << std::endl;
-		std::cout << "\t1 - Select" << std::endl;
-		std::cout << "\t2 - Bubble" << std::endl;
-		std::cout << "\t3 - Merge" << std::endl;
-		std::cout << "\t4 - Quick" << std::endl;
-		std::cout << "\t5 - Heap" << std::endl;
-	{
-		getline(std::cin, strInput);
-		input = stoi(strInput);
-	}
-	while(input < 0 || input > 5);
-	
-	return static_cast<Sort>(input);
+	std::ofstream csv;
+	csv.open("benchmark_output/" + filename.str());
+
+	csv.close();
 }
 
-// Displays the time display menu and handles user input
-Display display_menu()
-{
-	std::string strInput;
-	int input;
-	
-		std::cout << "Choose format to display time:" << std::endl;
-		std::cout << "\t0 - Seconds" << std::endl;
-		std::cout << "\t1 - Cycles" << std::endl;
-	{
-		getline(std::cin, strInput);
-		input = stoi(strInput);
-	}
-	while(input < 0 || input > 1);
-	
-	return static_cast<Display>(input);
-}
-
-// converts a space delimited list of integers into a new vector.
-int make_test(std::string input, std::vector<int>* list)
-{
-	int n = 0;
-	int num;
-	std::istringstream iss(input);
-	while(iss >> num)
-	{
-		(*list).push_back(num);
-		n++;
-	}
-	return n;
-}
-
-// Prints the passed vector
-void print_vector(std::vector<int>* v)
-{
-	std::cout << "n=" << (*v).size() << ": ";
-	for(std::vector<int>::iterator i = (*v).begin(); i < (*v).end(); i++)
-	{
-		std::cout << *i << " ";
-	}
-	std::cout << std::endl;
-}
-
-// Prints the time results as a pair
-void print_result(int n, clock_t start, clock_t end, Display display)
-{
-	clock_t cycles = end - start;
-	double seconds = ((double)cycles / CLOCKS_PER_SEC);
-	std::cout << "(" << n << "," << ( display == second ? seconds : cycles) << ")" << std::endl;
-}
+constexpr std::size_t NUM_TRIALS = 10;
+constexpr std::size_t NUM_INPUT_SIZES = 6;
+std::array<std::size_t, NUM_INPUT_SIZES> input_sizes = {10, 100, 1000, 10000, 100000, 1000000};
 
 
 int main() {
-  //Basic testing
-	//std::vector<int> a = { 1,2 };
-	//std::vector<int> a = { 1,2, 1 };
-	//std::cout << hash_find(a.begin(), a.end(), 2) << std::endl;
-  
-	Sort sort;
-	Display timeDisplay;
-	int n;
-	clock_t start, end;
+	std::srand(std::time(nullptr));
 
-	// Ask the user for the type of sort to use
-	sort = sort_menu();
-	
-	// Ask the user for time display preference
-	timeDisplay = display_menu();
+	std::ofstream best_csv("benchmark_data/best_cast.csv", std::ofstream::out);
+	std::ofstream worst_csv("benchmark_data/worst_case.csv", std::ofstream::out);
+	std::ofstream avg_csv("benchmark_data/avg_case.csv", std::ofstream::out);
 
-	// Ask the user for the sequence of numbers to sort and repeat until user quits
-	std::cout << "Enter the sequence of integers to be sorted separated by spaces (enter \"q\" to quit):" << std::endl;
-	std::string input;
-	getline(std::cin, input);
-	while(input.compare("q") != 0)
-	{
-		std::vector<int> testCase;
-		n = make_test(input, &testCase);
+	best_csv << "N,insertion,selection,bubble,merge,quick,heap\n";
+	worst_csv << "N,insertion,selection,bubble,merge,quick,heap\n";
+	avg_csv << "N,insertion,selection,bubble,merge,quick,heap\n";
 
-		switch(sort)
-		{
-			case Sort::insert:
-			{
-				// insertion
-				start = clock();
-				insertion_sort(testCase.begin(), testCase.end());
-				end = clock();
-				break;
-			}
-			case Sort::select:
-			{
-				// selection
-				start = clock();
-				selection_sort(testCase.begin(), testCase.end());
-				end = clock();
-				break;
-			}
-			case Sort::bubble:
-			{
-				// bubble
-				start = clock();
-				bubble_sort(testCase.begin(), testCase.end());
-				end = clock();
-				break;
-			}
-			case Sort::merge:
-			{
-				// merge
-				start = clock();
-				merge_sort(testCase.begin(), testCase.end());
-				end = clock();
-				break;
-			}
-			case Sort::quick:
-			{
-				// quick
-				// start = clock();
-				// quick_sort(testCase.begin(), testCase.end());
-				// end = clock();
-				break;
-			}
-			case Sort::heap:
-			{
-				// heap
-				// start = clock();
-				// heap_sort(heapVect.begin(), heapVect.end());
-				// end = clock();
-				break;
-			}
-		}
-		//print_vector(&testCase);
-		print_result(n, start, end, timeDisplay);
-		getline(std::cin, input);
+	for (auto input_size : input_sizes) {
+		std::cout << "------------------------------------------------------------" << std::endl;
+		std::cout << "Input size = " << input_size << ", # trials = " << NUM_TRIALS << std::endl;
+		std::cout << "------------------------------------------------------------" << std::endl;
+		
+		BenchmarkResults results = benchmark(input_size, NUM_TRIALS);
+		
+		best_csv << input_size                               << ","
+				 << results.insertion_sort.best_case.count() << ","
+		 		 << results.selection_sort.best_case.count() << ","
+				 << results.bubble_sort.best_case.count()    << ","
+				 << results.merge_sort.best_case.count()     << ","
+				 << 0                                        << ","
+				 << 0                                        << "\n";
+
+		
+		worst_csv << input_size                                << ","
+		          << results.insertion_sort.worst_case.count() << ","
+		 		  << results.selection_sort.worst_case.count() << ","
+				  << results.bubble_sort.worst_case.count()    << ","
+				  << results.merge_sort.worst_case.count()     << ","
+				  << 0                                         << ","
+				  << 0                                         << "\n";
+
+		
+		avg_csv << input_size                              << ","
+		        << results.insertion_sort.avg_case.count() << ","
+		 		<< results.selection_sort.avg_case.count() << ","
+				<< results.bubble_sort.avg_case.count()    << ","
+				<< results.merge_sort.avg_case.count()     << ","
+				<< 0                                       << ","
+				<< 0                                       << "\n";
+
+		std::cout << std::endl;
 	}
 
-	system("pause");
+	best_csv.close();
+	worst_csv.close();
+	avg_csv.close();
+
 	return 0;
 }
+
 #endif
