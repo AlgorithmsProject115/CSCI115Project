@@ -110,20 +110,8 @@ bool hash_find(RandomAccessIterator begin, RandomAccessIterator end, T val) {
 #	include "tests/catch.hpp"
 #else
 
-static void write_to_csv(std::size_t input_size, std::size_t num_trials, BenchmarkResults const &results) {
-	std::ostringstream filename;
-	filename << "N_" << input_size << "_trials_" << num_trials << ".csv";
-
-	std::ofstream csv;
-	csv.open("benchmark_output/" + filename.str());
-
-	csv.close();
-}
-
 constexpr std::size_t NUM_TRIALS = 10;
-constexpr std::size_t NUM_INPUT_SIZES = 6;
-std::array<std::size_t, NUM_INPUT_SIZES> input_sizes = {10, 100, 1000, 10000, 100000, 1000000};
-
+constexpr std::size_t MAX_INPUT_SIZE = 65536;
 
 int main() {
 	std::srand(std::time(nullptr));
@@ -136,7 +124,7 @@ int main() {
 	worst_csv << "N,insertion,selection,bubble,merge,quick,heap\n";
 	avg_csv << "N,insertion,selection,bubble,merge,quick,heap\n";
 
-	for (auto input_size : input_sizes) {
+	for ( auto input_size = 1; input_size <= MAX_INPUT_SIZE; input_size *= 2) {
 		std::cout << "------------------------------------------------------------" << std::endl;
 		std::cout << "Input size = " << input_size << ", # trials = " << NUM_TRIALS << std::endl;
 		std::cout << "------------------------------------------------------------" << std::endl;
