@@ -113,8 +113,12 @@ bool hash_find(RandomAccessIterator begin, RandomAccessIterator end, T val) {
 #else
 
 constexpr std::size_t NUM_TRIALS = 10;
+<<<<<<< HEAD
+constexpr std::size_t MAX_INPUT_SIZE = 65536;
+=======
 constexpr std::size_t NUM_INPUT_SIZES = 6;
 std::array<std::size_t, NUM_INPUT_SIZES> input_sizes = {10, 100, 1000, 10000, 100000, 1000000};
+>>>>>>> d65a6294a78ab726dd5321439329d216f64143d7
 
 int main() {
 	std::srand(std::time(nullptr));
@@ -127,7 +131,7 @@ int main() {
 	worst_csv << "N,insertion,selection,bubble,merge,quick,heap\n";
 	avg_csv << "N,insertion,selection,bubble,merge,quick,heap\n";
 
-	for (auto input_size : input_sizes) {
+	for ( auto input_size = 1; input_size <= MAX_INPUT_SIZE; input_size *= 2) {
 		std::cout << "------------------------------------------------------------" << std::endl;
 		std::cout << "Input size = " << input_size << ", # trials = " << NUM_TRIALS << std::endl;
 		std::cout << "------------------------------------------------------------" << std::endl;
