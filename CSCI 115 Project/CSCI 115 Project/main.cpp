@@ -1,11 +1,13 @@
 #include "sort_algs.h"
-#include <iostream>
+#include "benchmark.h"
 #include <unordered_map>
-
-// When RUN_UNIT_TESTS is defined, compiling the program will compile the
-// unit tests. Then running the resulting executable will run the unit tests.
-// Comment this line out to compile the normal program instead.
-#define RUN_UNIT_TESTS
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <vector>
+#include <cstdlib>
+#include <ctime>
 
 //Part 2
 
@@ -99,19 +101,73 @@ bool hash_find(RandomAccessIterator begin, RandomAccessIterator end, T val) {
 	}
 	return false;
 }
-/*
+
+
+// When RUN_UNIT_TESTS is defined, compiling the program will compile the
+// unit tests. Then running the resulting executable will run the unit tests.
+// Comment this line out to compile the normal program instead.
+
 #ifdef RUN_UNIT_TESTS
 #	define CATCH_CONFIG_MAIN
 #	include "tests/catch.hpp"
 #else
-*/
+
+constexpr std::size_t NUM_TRIALS = 10;
+constexpr std::size_t NUM_INPUT_SIZES = 6;
+std::array<std::size_t, NUM_INPUT_SIZES> input_sizes = {10, 100, 1000, 10000, 100000, 1000000};
+
 int main() {
-	//Basic testing
-	//std::vector<int> a = { 1 };
-	//std::vector<int> b = { 1, 1 };
-	//std::cout << hash_find(a.begin(), a.end(), 2) << std::endl;
-	//std::cout << hash_find(b.begin(), b.end(), 2) << std::endl;
-	system("pause");
+	std::srand(std::time(nullptr));
+
+	std::ofstream best_csv("benchmark_data/best_cast.csv", std::ofstream::out);
+	std::ofstream worst_csv("benchmark_data/worst_case.csv", std::ofstream::out);
+	std::ofstream avg_csv("benchmark_data/avg_case.csv", std::ofstream::out);
+
+	best_csv << "N,insertion,selection,bubble,merge,quick,heap\n";
+	worst_csv << "N,insertion,selection,bubble,merge,quick,heap\n";
+	avg_csv << "N,insertion,selection,bubble,merge,quick,heap\n";
+
+	for (auto input_size : input_sizes) {
+		std::cout << "------------------------------------------------------------" << std::endl;
+		std::cout << "Input size = " << input_size << ", # trials = " << NUM_TRIALS << std::endl;
+		std::cout << "------------------------------------------------------------" << std::endl;
+		
+		BenchmarkResults results = benchmark(input_size, NUM_TRIALS);
+		
+		best_csv << input_size                               << ","
+				 << results.insertion_sort.best_case.count() << ","
+		 		 << results.selection_sort.best_case.count() << ","
+				 << results.bubble_sort.best_case.count()    << ","
+				 << results.merge_sort.best_case.count()     << ","
+				 << 0                                        << ","
+				 << 0                                        << "\n";
+
+		
+		worst_csv << input_size                                << ","
+		          << results.insertion_sort.worst_case.count() << ","
+		 		  << results.selection_sort.worst_case.count() << ","
+				  << results.bubble_sort.worst_case.count()    << ","
+				  << results.merge_sort.worst_case.count()     << ","
+				  << 0                                         << ","
+				  << 0                                         << "\n";
+
+		
+		avg_csv << input_size                              << ","
+		        << results.insertion_sort.avg_case.count() << ","
+		 		<< results.selection_sort.avg_case.count() << ","
+				<< results.bubble_sort.avg_case.count()    << ","
+				<< results.merge_sort.avg_case.count()     << ","
+				<< 0                                       << ","
+				<< 0                                       << "\n";
+
+		std::cout << std::endl;
+	}
+
+	best_csv.close();
+	worst_csv.close();
+	avg_csv.close();
+
 	return 0;
 }
-//#endif
+
+#endif
