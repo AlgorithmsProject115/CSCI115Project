@@ -214,15 +214,15 @@ RandomAccessIterator partition(RandomAccessIterator lo, RandomAccessIterator hi)
  * @param high last index
  */ 
 template <typename RandomAccessIterator>
-void quick_sort(RandomAccessIterator low, RandomAccessIterator high)
+void quick_sort(RandomAccessIterator begin, RandomAccessIterator end)
 {
-    if (high <= low) return;  
+    if (end <= begin) return;  
     
-    RandomAccessIterator p = partition(low, high);
+    RandomAccessIterator p = partition(begin, end);
 
     // Quick sort on left and right of partition
-    quick_sort(low, p);
-    quick_sort(std::next(p), high);
+    quick_sort(begin, p - 1);
+    quick_sort(p + 1, end);
 }
 
 /**

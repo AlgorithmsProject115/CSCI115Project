@@ -175,8 +175,6 @@ TEST_CASE( "quick sort" ) {
     SECTION( "sorts non-empty unsorted vector" ) {
         std::vector<int> vec = {5, 1, 4, 2, 3, 9, 6, 8, 7, 10};
         quick_sort(vec.begin(), vec.end() - 1);
-        // for (auto i : vec) std::cout << i << " ";
-        // std::cout << std::endl;
         REQUIRE(std::is_sorted(vec.begin(), vec.end()));
     }
 
