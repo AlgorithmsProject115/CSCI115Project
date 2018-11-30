@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=--std=c++11
+CFLAGS=--std=c++11 -O3
 ODIR=obj
 HDRS=sort_algs.h profile.h benchmark.h
 
@@ -7,7 +7,7 @@ _OBJ=benchmark.o main.o
 OBJ=$(patsubst %,$(ODIR)/%,$(_OBJ))
 
 TEST_IDIR=./tests
-TEST_CFLAGS=$(CFLAGS) -DRUN_UNIT_TESTS -g
+TEST_CFLAGS=$(CFLAGS) -DRUN_UNIT_TESTS
 _TEST_OBJ=main_test.o sort_algs_test.o #profile_test.o
 TEST_OBJ=$(patsubst %,$(ODIR)/%,$(_TEST_OBJ))
 
