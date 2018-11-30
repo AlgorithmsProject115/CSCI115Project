@@ -184,24 +184,23 @@ void merge_sort(RandomAccessIterator begin, RandomAccessIterator end)
  * 
  * @param high last index of range
  */ 
-template <typename T>
-int partition(std::vector<T> vec[], int low, int high)
+#include <iostream>
+template <typename RandomAccessIterator>
+RandomAccessIterator partition(RandomAccessIterator lo, RandomAccessIterator hi) 
 {
-    // Using last index as pivot
-    T pivot = (*vec)[high];
+    RandomAccessIterator i = lo;
+    RandomAccessIterator j = hi + 1;
+    auto pivot = *lo;
 
-    int i = low;
-    for(int j = low; j < high; j++)
+    while (true)
     {
-        if((*vec)[j] <= pivot)
-        {
-            swap(vec, i, j);
-            i++;
-        }
+        while (*(++i) < pivot) if (i == hi) break;
+        while (pivot < *(--j)) if (j == lo) break;
+        if (i >= j) break;
+        exch(i, j);
     }
-
-    swap(vec, i, high);
-    return i;
+    exch(lo, j);
+    return j;
 }
 
 /**
@@ -214,17 +213,16 @@ int partition(std::vector<T> vec[], int low, int high)
  * 
  * @param high last index
  */ 
-template <typename T>
-void quick_sort(std::vector<T> vec[], int low, int high)
+template <typename RandomAccessIterator>
+void quick_sort(RandomAccessIterator low, RandomAccessIterator high)
 {
-    if (low >= high) return;
+    if (high <= low) return;  
     
-    // partition
-    int p = partition(vec, low, high);
+    RandomAccessIterator p = partition(low, high);
 
     // Quick sort on left and right of partition
-    quick_sort(vec, low, p - 1);
-    quick_sort(vec, p + 1, high);
+    quick_sort(low, p);
+    quick_sort(std::next(p), high);
 }
 
 /**

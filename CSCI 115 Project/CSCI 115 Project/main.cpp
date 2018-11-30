@@ -106,19 +106,13 @@ bool hash_find(RandomAccessIterator begin, RandomAccessIterator end, T val) {
 // When RUN_UNIT_TESTS is defined, compiling the program will compile the
 // unit tests. Then running the resulting executable will run the unit tests.
 // Comment this line out to compile the normal program instead.
-
 #ifdef RUN_UNIT_TESTS
 #	define CATCH_CONFIG_MAIN
 #	include "tests/catch.hpp"
 #else
 
 constexpr std::size_t NUM_TRIALS = 10;
-<<<<<<< HEAD
 constexpr std::size_t MAX_INPUT_SIZE = 65536;
-=======
-constexpr std::size_t NUM_INPUT_SIZES = 6;
-std::array<std::size_t, NUM_INPUT_SIZES> input_sizes = {10, 100, 1000, 10000, 100000, 1000000};
->>>>>>> d65a6294a78ab726dd5321439329d216f64143d7
 
 int main() {
 	std::srand(std::time(nullptr));
