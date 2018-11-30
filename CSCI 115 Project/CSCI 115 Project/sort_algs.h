@@ -184,24 +184,23 @@ void merge_sort(RandomAccessIterator begin, RandomAccessIterator end)
  * 
  * @param high last index of range
  */ 
-template <typename T>
-int partition(std::vector<T> vec[], int low, int high)
+#include <iostream>
+template <typename RandomAccessIterator>
+RandomAccessIterator partition(RandomAccessIterator lo, RandomAccessIterator hi) 
 {
-    // Using last index as pivot
-    T pivot = (*vec)[high];
+    RandomAccessIterator i = lo;
+    RandomAccessIterator j = hi + 1;
+    auto pivot = *lo;
 
-    int i = low;
-    for(int j = low; j < high; j++)
+    while (true)
     {
-        if((*vec)[j] <= pivot)
-        {
-            swap(vec, i, j);
-            i++;
-        }
+        while (*(++i) < pivot) if (i == hi) break;
+        while (pivot < *(--j)) if (j == lo) break;
+        if (i >= j) break;
+        exch(i, j);
     }
-
-    swap(vec, i, high);
-    return i;
+    exch(lo, j);
+    return j;
 }
 
 /**
@@ -214,17 +213,16 @@ int partition(std::vector<T> vec[], int low, int high)
  * 
  * @param high last index
  */ 
-template <typename T>
-void quick_sort(std::vector<T> vec[], int low, int high)
+template <typename RandomAccessIterator>
+void quick_sort(RandomAccessIterator begin, RandomAccessIterator end)
 {
-    if (low >= high) return;
+    if (end <= begin) return;  
     
-    // partition
-    int p = partition(vec, low, high);
+    RandomAccessIterator p = partition(begin, end);
 
     // Quick sort on left and right of partition
-    quick_sort(vec, low, p - 1);
-    quick_sort(vec, p + 1, high);
+    quick_sort(begin, p - 1);
+    quick_sort(p + 1, end);
 }
 
 /**
@@ -236,22 +234,22 @@ void quick_sort(std::vector<T> vec[], int low, int high)
  * 
  * @param n size of heap
  */ 
-template <typename T>
-void heapify(std::vector<T> vec[], int i, int n)
+template <typename RandomAccessIterator>
+void heapify(RandomAccessIterator begin, int i, int n)
 {
     // Get left and right child based on 0-index
     int l = (2 * i) + 1;
     int r = (2 * i) + 2;
     int largest = i;
 
-    if(l <= n && (*vec)[l] > (*vec)[largest]) largest = l;
-    if(r <= n && (*vec)[r] > (*vec)[largest]) largest = r;
+    if((l < n) && (*(begin + l) > *(begin + largest))) largest = l;
+    if((r < n) && (*(begin + r) > *(begin + largest))) largest = r;
 
     if(largest != i)
     {
         // swap the values at i and largest, then restore heap invariant.
-        swap(vec, i, largest);
-        heapify(vec, largest, n);
+        exch(begin + i, begin + largest);
+        heapify(begin, largest, n);
     }
 }
 
@@ -261,19 +259,21 @@ void heapify(std::vector<T> vec[], int i, int n)
  * 
  * @param vec pointer to vector<T> to be sorted.
  */ 
-template <typename T>
-void heap_sort(std::vector<T> vec[])
+template <typename RandomAccessIterator>
+void heap_sort(RandomAccessIterator begin, RandomAccessIterator end)
 {
-    int heapSize = (*vec).size();
+    if (begin == end) return;
+
+    int heapSize = std::distance(begin, end);
     int firstParent = (heapSize / 2) - 1;
 
     // Build the heap
-    for(int i = firstParent; i >= 0; i--) heapify(vec, i, heapSize - 1);
+    for(int i = firstParent; i >= 0; --i) heapify(begin, i, heapSize);
 
-    for(int i = heapSize - 1; i > 0; i--)
+    for(int i = heapSize - 1; i > 0; --i)
     {
-        swap(vec, 0, i);
-        heapify(vec, 0, i-1);
+        exch(begin, begin + i);
+        heapify(begin, 0, i);
     }
 }
 

@@ -43,7 +43,7 @@ struct BackwardsGenerator {
 // Private helper methods
 // -----------------------------------------------------------
 
-static RuntimeRecord benchmark_one(SortFunction sort, BenchmarkInput const &input) {
+static RuntimeRecord benchmark_one(SortFunction sort, BenchmarkInput const &input, bool use_past_the_end_it=true) {
     RuntimeRecord record;
 	const std::size_t N = input.num_trials;
 
@@ -55,9 +55,9 @@ static RuntimeRecord benchmark_one(SortFunction sort, BenchmarkInput const &inpu
         std::vector<int> reverse = input.reverse;
 		std::vector<int> random  = input.random;
 
-        record.best_case  += profile(sort, sorted.begin(),  sorted.end());
-		record.worst_case += profile(sort, reverse.begin(), reverse.end());
-		record.avg_case   += profile(sort, random.begin(),  random.end());
+        record.best_case  += profile(sort, sorted.begin(), sorted.end() - (use_past_the_end_it ? 0 : 1));
+		record.worst_case += profile(sort, reverse.begin(), reverse.end() - (use_past_the_end_it ? 0 : 1));
+		record.avg_case   += profile(sort, random.begin(),  random.end() - (use_past_the_end_it ? 0 : 1));
     }
 
 	record.best_case  = microseconds(record.best_case.count() / N);
@@ -100,8 +100,14 @@ BenchmarkResults benchmark(std::size_t input_size, std::size_t num_trials) {
 	std::cout << "done" << std::endl;	
 
 	// Quick Sort
+	std::cout << "Quick Sort";
+    results.quick_sort = benchmark_one(quick_sort, input, false);
+	std::cout << "done" << std::endl;	
 
 	// Heap Sort
+	std::cout << "Heap Sort";
+    results.heap_sort = benchmark_one(heap_sort, input);
+	std::cout << "done" << std::endl;
 
 	return results;
 }
