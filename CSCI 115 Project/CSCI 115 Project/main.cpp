@@ -137,7 +137,7 @@ int main() {
 		 		 << results.selection_sort.best_case.count() << ","
 				 << results.bubble_sort.best_case.count()    << ","
 				 << results.merge_sort.best_case.count()     << ","
-				 << 0                                        << ","
+				 << results.quick_sort.best_case.count()     << ","
 				 << 0                                        << "\n";
 
 		
@@ -146,7 +146,7 @@ int main() {
 		 		  << results.selection_sort.worst_case.count() << ","
 				  << results.bubble_sort.worst_case.count()    << ","
 				  << results.merge_sort.worst_case.count()     << ","
-				  << 0                                         << ","
+				  << results.quick_sort.worst_case.count()     << ","
 				  << 0                                         << "\n";
 
 		
@@ -155,7 +155,7 @@ int main() {
 		 		<< results.selection_sort.avg_case.count() << ","
 				<< results.bubble_sort.avg_case.count()    << ","
 				<< results.merge_sort.avg_case.count()     << ","
-				<< 0                                       << ","
+				<< results.quick_sort.avg_case.count()     << ","
 				<< 0                                       << "\n";
 
 		std::cout << std::endl;
