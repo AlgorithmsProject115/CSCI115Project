@@ -138,7 +138,7 @@ int main() {
 				 << results.bubble_sort.best_case.count()    << ","
 				 << results.merge_sort.best_case.count()     << ","
 				 << results.quick_sort.best_case.count()     << ","
-				 << 0                                        << "\n";
+				 << results.heap_sort.best_case.count()      << "\n";
 
 		
 		worst_csv << input_size                                << ","
@@ -147,7 +147,7 @@ int main() {
 				  << results.bubble_sort.worst_case.count()    << ","
 				  << results.merge_sort.worst_case.count()     << ","
 				  << results.quick_sort.worst_case.count()     << ","
-				  << 0                                         << "\n";
+				  << results.heap_sort.worst_case.count()      << "\n";
 
 		
 		avg_csv << input_size                              << ","
@@ -156,7 +156,7 @@ int main() {
 				<< results.bubble_sort.avg_case.count()    << ","
 				<< results.merge_sort.avg_case.count()     << ","
 				<< results.quick_sort.avg_case.count()     << ","
-				<< 0                                       << "\n";
+				<< results.heap_sort.avg_case.count()      << "\n";
 
 		std::cout << std::endl;
 	}

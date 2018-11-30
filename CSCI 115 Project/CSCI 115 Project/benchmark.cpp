@@ -105,6 +105,9 @@ BenchmarkResults benchmark(std::size_t input_size, std::size_t num_trials) {
 	std::cout << "done" << std::endl;	
 
 	// Heap Sort
+	std::cout << "Heap Sort";
+    results.heap_sort = benchmark_one(heap_sort, input);
+	std::cout << "done" << std::endl;
 
 	return results;
 }
