@@ -234,22 +234,22 @@ void quick_sort(RandomAccessIterator begin, RandomAccessIterator end)
  * 
  * @param n size of heap
  */ 
-template <typename T>
-void heapify(std::vector<T> vec[], int i, int n)
+template <typename RandomAccessIterator>
+void heapify(RandomAccessIterator begin, int i, int n)
 {
     // Get left and right child based on 0-index
     int l = (2 * i) + 1;
     int r = (2 * i) + 2;
     int largest = i;
 
-    if(l <= n && (*vec)[l] > (*vec)[largest]) largest = l;
-    if(r <= n && (*vec)[r] > (*vec)[largest]) largest = r;
+    if((l < n) && (*(begin + l) > *(begin + largest))) largest = l;
+    if((r < n) && (*(begin + r) > *(begin + largest))) largest = r;
 
     if(largest != i)
     {
         // swap the values at i and largest, then restore heap invariant.
-        swap(vec, i, largest);
-        heapify(vec, largest, n);
+        exch(begin + i, begin + largest);
+        heapify(begin, largest, n);
     }
 }
 
@@ -259,19 +259,21 @@ void heapify(std::vector<T> vec[], int i, int n)
  * 
  * @param vec pointer to vector<T> to be sorted.
  */ 
-template <typename T>
-void heap_sort(std::vector<T> vec[])
+template <typename RandomAccessIterator>
+void heap_sort(RandomAccessIterator begin, RandomAccessIterator end)
 {
-    int heapSize = (*vec).size();
+    if (begin == end) return;
+
+    int heapSize = std::distance(begin, end);
     int firstParent = (heapSize / 2) - 1;
 
     // Build the heap
-    for(int i = firstParent; i >= 0; i--) heapify(vec, i, heapSize - 1);
+    for(int i = firstParent; i >= 0; --i) heapify(begin, i, heapSize);
 
-    for(int i = heapSize - 1; i > 0; i--)
+    for(int i = heapSize - 1; i > 0; --i)
     {
-        swap(vec, 0, i);
-        heapify(vec, 0, i-1);
+        exch(begin, begin + i);
+        heapify(begin, 0, i);
     }
 }
 
