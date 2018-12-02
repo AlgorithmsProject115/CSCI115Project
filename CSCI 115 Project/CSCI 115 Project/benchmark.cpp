@@ -26,7 +26,7 @@ struct BenchmarkInput {
     BenchmarkInput(std::size_t input_size, std::size_t num_trials): 
 		input_size(input_size), 
 		num_trials(num_trials),
-		unsorted(num_trials), 
+		unsorted(input_size, 0), 
 		sorted(input_size, 0), 
 		rsorted(input_size, 0), 
 		psorted_25(input_size, 0),
@@ -146,14 +146,14 @@ BenchmarkResults benchmark(std::size_t input_size, std::size_t num_trials) {
     results.quick_sort = benchmark_one(quick_sort, input, false);
 	std::cout << "done" << std::endl;	
 
-	// Quick Sort
+	// Hoare Quick Sort
 	std::cout << "Hoare Quick Sort";
-    results.quick_sort = benchmark_one(hoare_quick_sort, input, false);
+    results.hoare_quick_sort = benchmark_one(hoare_quick_sort, input, false);
 	std::cout << "done" << std::endl;	
 
-	// Quick Sort
+	// Randomized Quick Sort
 	std::cout << "Randomized Quick Sort";
-    results.quick_sort = benchmark_one(randomized_quick_sort, input, false);
+    results.randomized_quick_sort = benchmark_one(randomized_quick_sort, input, false);
 	std::cout << "done" << std::endl;	
 
 	// Heap Sort
