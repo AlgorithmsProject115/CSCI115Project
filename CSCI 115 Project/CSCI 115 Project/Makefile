@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=--std=c++11 -O3
+CFLAGS=--std=c++11 -O2
 ODIR=obj
 HDRS=sort_algs.h profile.h benchmark.h
 

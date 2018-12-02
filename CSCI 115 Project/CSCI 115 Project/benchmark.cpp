@@ -13,18 +13,26 @@ using std::chrono::microseconds;
 using SortFunction = void (*)(std::vector<int>::iterator, std::vector<int>::iterator);
 
 struct BenchmarkInput {
+	std::vector<int> unsorted;
 	std::vector<int> sorted;
-	std::vector<int> reverse;
-	std::vector<int> random;
+	std::vector<int> rsorted;
+	std::vector<int> psorted_25;
+	std::vector<int> psorted_50;
+	std::vector<int> psorted_75;
+	std::vector<int> few_unique;
 	std::size_t input_size;
 	std::size_t num_trials;
 
     BenchmarkInput(std::size_t input_size, std::size_t num_trials): 
 		input_size(input_size), 
-		num_trials(num_trials), 
+		num_trials(num_trials),
+		unsorted(input_size, 0), 
 		sorted(input_size, 0), 
-		reverse(input_size, 0), 
-		random(input_size, 0) {}
+		rsorted(input_size, 0), 
+		psorted_25(input_size, 0),
+		psorted_50(input_size, 0),
+		psorted_75(input_size, 0),
+		few_unique(input_size, 0) {}
 };
 
 struct ForwardGenerator {
@@ -39,11 +47,30 @@ struct BackwardsGenerator {
 	int operator()() { return curr--; }
 };
 
+struct RandomGenerator {
+	int max_val;
+	RandomGenerator(int max): max_val{max} {}
+	int operator()() { return std::rand() % max_val; }
+};
+
+struct PSortedGenerator {
+	std::size_t num_sorted;
+	std::size_t curr;
+	std::size_t max_val; 
+	PSortedGenerator(std::size_t input_size, double ratio): 
+		num_sorted{static_cast<std::size_t>(input_size * ratio)}, 
+		curr{0},
+		max_val{input_size} {}
+	int operator()() { 
+		return curr > num_sorted ? std::rand() % max_val : ++curr;
+	}
+};
+
 // -----------------------------------------------------------
 // Private helper methods
 // -----------------------------------------------------------
 
-static RuntimeRecord benchmark_one(SortFunction sort, BenchmarkInput const &input, bool use_past_the_end_it=true) {
+static RuntimeRecord benchmark_one(SortFunction sort, BenchmarkInput const &input, bool use_ptei=true) {
     RuntimeRecord record;
 	const std::size_t N = input.num_trials;
 
@@ -51,18 +78,29 @@ static RuntimeRecord benchmark_one(SortFunction sort, BenchmarkInput const &inpu
         if (i % (N / 10) == 0)
             std::cout << "." << std::flush;
         
-        std::vector<int> sorted  = input.sorted;
-        std::vector<int> reverse = input.reverse;
-		std::vector<int> random  = input.random;
+        std::vector<int> unsorted    = input.unsorted;
+        std::vector<int> sorted      = input.sorted;
+		std::vector<int> rsorted     = input.rsorted;
+		std::vector<int> psorted_25  = input.psorted_25;
+		std::vector<int> psorted_50  = input.psorted_50;
+		std::vector<int> psorted_75  = input.psorted_75;
+		std::vector<int> few_unique  = input.few_unique;
 
-        record.best_case  += profile(sort, sorted.begin(), sorted.end() - (use_past_the_end_it ? 0 : 1));
-		record.worst_case += profile(sort, reverse.begin(), reverse.end() - (use_past_the_end_it ? 0 : 1));
-		record.avg_case   += profile(sort, random.begin(),  random.end() - (use_past_the_end_it ? 0 : 1));
+        record.unsorted   += profile(sort, unsorted.begin(), unsorted.end() - (use_ptei ? 0 : 1));
+		record.sorted     += profile(sort, sorted.begin(), sorted.end() - (use_ptei ? 0 : 1));
+		record.rsorted    += profile(sort, rsorted.begin(),  rsorted.end() - (use_ptei ? 0 : 1));
+		record.psorted_25 += profile(sort, psorted_25.begin(), psorted_25.end() - (use_ptei ? 0 : 1));;
+		record.psorted_50 += profile(sort, psorted_50.begin(), psorted_50.end() - (use_ptei ? 0 : 1));;
+		record.psorted_75 += profile(sort, psorted_75.begin(), psorted_75.end() - (use_ptei ? 0 : 1));;
+		record.few_unique += profile(sort, few_unique.begin(), few_unique.end() - (use_ptei ? 0 : 1));;
     }
 
-	record.best_case  = microseconds(record.best_case.count() / N);
-	record.worst_case = microseconds(record.worst_case.count() / N);;
-	record.avg_case   = microseconds(record.avg_case.count() / N);;
+	record.unsorted   = microseconds(record.unsorted.count() / N);
+	record.sorted     = microseconds(record.sorted.count() / N);;
+	record.rsorted    = microseconds(record.rsorted.count() / N);;
+	record.psorted_25 = microseconds(record.psorted_25.count() / N);;
+	record.psorted_50 = microseconds(record.psorted_50.count() / N);;
+	record.psorted_75 = microseconds(record.psorted_75.count() / N);;
 
     return record;
 }
@@ -75,9 +113,13 @@ BenchmarkResults benchmark(std::size_t input_size, std::size_t num_trials) {
     BenchmarkInput input(input_size, num_trials);
 	BenchmarkResults results;
 
+	std::generate(input.unsorted.begin(),  input.unsorted.end(), RandomGenerator(input_size));
 	std::generate(input.sorted.begin(),  input.sorted.end(),  ForwardGenerator());
-	std::generate(input.reverse.begin(), input.reverse.end(), BackwardsGenerator(input_size));
-	std::generate(input.random.begin(),  input.random.end(),  [input_size]() { return std::rand() % input_size; });
+	std::generate(input.rsorted.begin(), input.rsorted.end(), BackwardsGenerator(input_size));
+	std::generate(input.psorted_25.begin(), input.psorted_25.end(), PSortedGenerator(input_size, 0.25));
+	std::generate(input.psorted_50.begin(), input.psorted_50.end(), PSortedGenerator(input_size, 0.25));
+	std::generate(input.psorted_75.begin(), input.psorted_75.end(), PSortedGenerator(input_size, 0.25));
+	std::generate(input.few_unique.begin(), input.few_unique.end(), RandomGenerator(10));
 
 	// Insertion Sort
 	std::cout << "Insertion Sort";
@@ -102,6 +144,16 @@ BenchmarkResults benchmark(std::size_t input_size, std::size_t num_trials) {
 	// Quick Sort
 	std::cout << "Quick Sort";
     results.quick_sort = benchmark_one(quick_sort, input, false);
+	std::cout << "done" << std::endl;	
+
+	// Hoare Quick Sort
+	std::cout << "Hoare Quick Sort";
+    results.hoare_quick_sort = benchmark_one(hoare_quick_sort, input, false);
+	std::cout << "done" << std::endl;	
+
+	// Randomized Quick Sort
+	std::cout << "Randomized Quick Sort";
+    results.randomized_quick_sort = benchmark_one(randomized_quick_sort, input, false);
 	std::cout << "done" << std::endl;	
 
 	// Heap Sort

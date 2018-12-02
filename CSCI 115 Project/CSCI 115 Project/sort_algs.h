@@ -2,6 +2,7 @@
 #define SORT_ALGS_H
 
 #include <vector>
+#include <cstdlib>
 
 template <typename RandomAccessIterator>
 void exch(RandomAccessIterator i, RandomAccessIterator j) {
@@ -184,9 +185,27 @@ void merge_sort(RandomAccessIterator begin, RandomAccessIterator end)
  * 
  * @param high last index of range
  */ 
-#include <iostream>
+
 template <typename RandomAccessIterator>
-RandomAccessIterator partition(RandomAccessIterator lo, RandomAccessIterator hi) 
+RandomAccessIterator partition(RandomAccessIterator lo, RandomAccessIterator hi)
+{
+    auto pivot = *hi;
+    RandomAccessIterator i = lo - 1;
+
+    for (auto j = lo; j < hi; ++j)
+    {
+        if (*j <= pivot) {
+            ++i;
+            exch(i, j);
+        }
+    }
+    exch(i + 1, hi);
+    return i + 1;
+}
+
+
+template <typename RandomAccessIterator>
+RandomAccessIterator hoare_partition(RandomAccessIterator lo, RandomAccessIterator hi) 
 {
     RandomAccessIterator i = lo;
     RandomAccessIterator j = hi + 1;
@@ -202,6 +221,16 @@ RandomAccessIterator partition(RandomAccessIterator lo, RandomAccessIterator hi)
     exch(lo, j);
     return j;
 }
+
+template <typename RandomAccessIterator>
+RandomAccessIterator randomized_partition(RandomAccessIterator lo, RandomAccessIterator hi) 
+{
+    int range  = std::distance(lo, hi);
+    int offset = std::rand() % range;
+    exch(lo + offset, hi);
+    return partition(lo, hi);
+}
+
 
 /**
  * Sorts the elements in the vector in ascending order. 
@@ -224,6 +253,31 @@ void quick_sort(RandomAccessIterator begin, RandomAccessIterator end)
     quick_sort(begin, p - 1);
     quick_sort(p + 1, end);
 }
+
+template <typename RandomAccessIterator>
+void hoare_quick_sort(RandomAccessIterator begin, RandomAccessIterator end)
+{
+    if (end <= begin) return;  
+    
+    RandomAccessIterator p = hoare_partition(begin, end);
+
+    // Quick sort on left and right of partition
+    hoare_quick_sort(begin, p - 1);
+    hoare_quick_sort(p + 1, end);
+}
+
+template <typename RandomAccessIterator>
+void randomized_quick_sort(RandomAccessIterator begin, RandomAccessIterator end)
+{
+    if (end <= begin) return;  
+    
+    RandomAccessIterator p = randomized_partition(begin, end);
+
+    // Quick sort on left and right of partition
+    randomized_quick_sort(begin, p - 1);
+    randomized_quick_sort(p + 1, end);
+}
+
 
 /**
  * Heapifies the subtree starting at i with heapsize n

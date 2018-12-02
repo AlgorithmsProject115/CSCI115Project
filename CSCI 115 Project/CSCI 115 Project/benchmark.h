@@ -5,14 +5,22 @@
 #include <cstddef>
 
 struct RuntimeRecord {
-	std::chrono::microseconds best_case;
-	std::chrono::microseconds worst_case;
-	std::chrono::microseconds avg_case;
+	std::chrono::microseconds unsorted;
+	std::chrono::microseconds sorted;
+	std::chrono::microseconds rsorted;
+	std::chrono::microseconds psorted_25;
+	std::chrono::microseconds psorted_50;
+	std::chrono::microseconds psorted_75;
+	std::chrono::microseconds few_unique;
 
 	RuntimeRecord(): 
-		best_case(std::chrono::microseconds::zero()), 
-		worst_case(std::chrono::microseconds::zero()),
-		avg_case(std::chrono::microseconds::zero()) {}
+		unsorted(std::chrono::microseconds::zero()), 
+		sorted(std::chrono::microseconds::zero()), 
+		rsorted(std::chrono::microseconds::zero()), 
+		psorted_25(std::chrono::microseconds::zero()), 
+		psorted_50(std::chrono::microseconds::zero()), 
+		psorted_75(std::chrono::microseconds::zero()), 
+		few_unique(std::chrono::microseconds::zero()) {}
 };
 
 struct BenchmarkResults {
@@ -21,6 +29,8 @@ struct BenchmarkResults {
 	RuntimeRecord bubble_sort;
 	RuntimeRecord merge_sort;
 	RuntimeRecord quick_sort;
+	RuntimeRecord hoare_quick_sort;
+	RuntimeRecord randomized_quick_sort;
 	RuntimeRecord heap_sort;
 };
 
