@@ -112,58 +112,117 @@ bool hash_find(RandomAccessIterator begin, RandomAccessIterator end, T val) {
 #else
 
 constexpr std::size_t NUM_TRIALS = 10;
-constexpr std::size_t MAX_INPUT_SIZE = 65536;
+constexpr std::size_t MAX_INPUT_SIZE = 32768;
 
 int main() {
 	std::srand(std::time(nullptr));
 
-	std::ofstream best_csv("benchmark_data/best_cast.csv", std::ofstream::out);
-	std::ofstream worst_csv("benchmark_data/worst_case.csv", std::ofstream::out);
-	std::ofstream avg_csv("benchmark_data/avg_case.csv", std::ofstream::out);
+	std::ofstream unsorted_csv(  "benchmark_data/unsorted.csv",            std::ofstream::out);
+	std::ofstream sorted_csv(    "benchmark_data/sorted.csv",              std::ofstream::out);
+	std::ofstream reverse_csv(   "benchmark_data/reverse_sorted.csv",      std::ofstream::out);
+	std::ofstream psorted25_csv( "benchmark_data/partially_sorted_25.csv", std::ofstream::out);
+	std::ofstream psorted50_csv( "benchmark_data/partially_sorted_50.csv", std::ofstream::out);
+	std::ofstream psorted75_csv( "benchmark_data/partially_sorted_75.csv", std::ofstream::out);
+	std::ofstream few_unique_csv("benchmark_data/few_unique_10.csv",       std::ofstream::out);
 
-	best_csv << "N,insertion,selection,bubble,merge,quick,heap\n";
-	worst_csv << "N,insertion,selection,bubble,merge,quick,heap\n";
-	avg_csv << "N,insertion,selection,bubble,merge,quick,heap\n";
+	std::string headers = "N,insertion,selection,bubble,merge,quick,hoare-quick,randomized-quick,heap\n";
 
-	for ( auto input_size = 1; input_size <= MAX_INPUT_SIZE; input_size *= 2) {
+	unsorted_csv   << headers;
+	sorted_csv     << headers;
+	reverse_csv    << headers;
+	psorted25_csv  << headers;
+	psorted50_csv  << headers;
+	psorted75_csv  << headers;
+	few_unique_csv << headers;
+
+	for (auto input_size = 1; input_size <= MAX_INPUT_SIZE; ++input_size) {
 		std::cout << "------------------------------------------------------------" << std::endl;
 		std::cout << "Input size = " << input_size << ", # trials = " << NUM_TRIALS << std::endl;
 		std::cout << "------------------------------------------------------------" << std::endl;
 		
 		BenchmarkResults results = benchmark(input_size, NUM_TRIALS);
 		
-		best_csv << input_size                               << ","
-				 << results.insertion_sort.best_case.count() << ","
-		 		 << results.selection_sort.best_case.count() << ","
-				 << results.bubble_sort.best_case.count()    << ","
-				 << results.merge_sort.best_case.count()     << ","
-				 << results.quick_sort.best_case.count()     << ","
-				 << results.heap_sort.best_case.count()      << "\n";
+		unsorted_csv << input_size                                     << ","
+				     << results.insertion_sort.unsorted.count()        << ","
+		 		     << results.selection_sort.unsorted.count()        << ","
+				     << results.bubble_sort.unsorted.count()           << ","
+				     << results.merge_sort.unsorted.count()            << ","
+				     << results.quick_sort.unsorted.count()            << ","
+					 << results.hoare_quick_sort.unsorted.count()      << ","
+					 << results.randomized_quick_sort.unsorted.count() << ","      
+				     << results.heap_sort.unsorted.count()             << "\n";
 
 		
-		worst_csv << input_size                                << ","
-		          << results.insertion_sort.worst_case.count() << ","
-		 		  << results.selection_sort.worst_case.count() << ","
-				  << results.bubble_sort.worst_case.count()    << ","
-				  << results.merge_sort.worst_case.count()     << ","
-				  << results.quick_sort.worst_case.count()     << ","
-				  << results.heap_sort.worst_case.count()      << "\n";
+		sorted_csv << input_size                                   << ","
+		           << results.insertion_sort.sorted.count()        << ","
+		 		   << results.selection_sort.sorted.count()        << ","
+				   << results.bubble_sort.sorted.count()           << ","
+				   << results.merge_sort.sorted.count()            << ","
+				   << results.quick_sort.sorted.count()            << ","
+				   << results.hoare_quick_sort.sorted.count()      << ","
+				   << results.randomized_quick_sort.sorted.count() << ","   
+				   << results.heap_sort.sorted.count()             << "\n";
 
-		
-		avg_csv << input_size                              << ","
-		        << results.insertion_sort.avg_case.count() << ","
-		 		<< results.selection_sort.avg_case.count() << ","
-				<< results.bubble_sort.avg_case.count()    << ","
-				<< results.merge_sort.avg_case.count()     << ","
-				<< results.quick_sort.avg_case.count()     << ","
-				<< results.heap_sort.avg_case.count()      << "\n";
+		reverse_csv << input_size                                    << ","
+		            << results.insertion_sort.rsorted.count()        << ","
+		 		    << results.selection_sort.rsorted.count()        << ","
+				    << results.bubble_sort.rsorted.count()           << ","
+				    << results.merge_sort.rsorted.count()            << ","
+				    << results.quick_sort.rsorted.count()            << ","
+					<< results.hoare_quick_sort.rsorted.count()      << ","
+					<< results.randomized_quick_sort.rsorted.count() << ","   
+				    << results.heap_sort.rsorted.count()             << "\n";
+
+		psorted25_csv << input_size                                       << ","
+		              << results.insertion_sort.psorted_25.count()        << ","
+		 		      << results.selection_sort.psorted_25.count()        << ","
+				      << results.bubble_sort.psorted_25.count()           << ","
+				      << results.merge_sort.psorted_25.count()            << ","
+				      << results.quick_sort.psorted_25.count()            << ","
+					  << results.hoare_quick_sort.psorted_25.count()      << ","
+					  << results.randomized_quick_sort.psorted_25.count() << ","   
+				      << results.heap_sort.psorted_25.count()             << "\n";
+
+		psorted50_csv << input_size                                       << ","
+		              << results.insertion_sort.psorted_50.count()        << ","
+		 		      << results.selection_sort.psorted_50.count()        << ","
+				      << results.bubble_sort.psorted_50.count()           << ","
+				      << results.merge_sort.psorted_50.count()            << ","
+				      << results.quick_sort.psorted_50.count()            << ","
+					  << results.hoare_quick_sort.psorted_50.count()      << ","
+					  << results.randomized_quick_sort.psorted_50.count() << ","   
+				      << results.heap_sort.psorted_50.count()             << "\n";
+
+		psorted75_csv << input_size                                       << ","
+		              << results.insertion_sort.psorted_75.count()        << ","
+		 		      << results.selection_sort.psorted_75.count()        << ","
+				      << results.bubble_sort.psorted_75.count()           << ","
+				      << results.merge_sort.psorted_75.count()            << ","
+				      << results.quick_sort.psorted_75.count()            << ","
+					  << results.hoare_quick_sort.psorted_75.count()      << ","
+					  << results.randomized_quick_sort.psorted_75.count() << ","   
+				      << results.heap_sort.psorted_75.count()             << "\n";
+
+		few_unique_csv << input_size                                       << ","
+		               << results.insertion_sort.few_unique.count()        << ","
+		 		       << results.selection_sort.few_unique.count()        << ","
+				       << results.bubble_sort.few_unique.count()           << ","
+				       << results.merge_sort.few_unique.count()            << ","
+				       << results.quick_sort.few_unique.count()            << ","
+					   << results.hoare_quick_sort.few_unique.count()      << ","
+					   << results.randomized_quick_sort.few_unique.count() << ","   
+				       << results.heap_sort.few_unique.count()             << "\n";
 
 		std::cout << std::endl;
 	}
 
-	best_csv.close();
-	worst_csv.close();
-	avg_csv.close();
+	unsorted_csv.close();
+	sorted_csv.close();
+	reverse_csv.close();
+	psorted25_csv.close();
+	psorted50_csv.close();
+	psorted75_csv.close();
+	few_unique_csv.close();
 
 	return 0;
 }
