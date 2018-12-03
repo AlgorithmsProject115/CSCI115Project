@@ -125,7 +125,7 @@ int main() {
 	std::ofstream psorted75_csv( "benchmark_data/partially_sorted_75.csv", std::ofstream::out);
 	std::ofstream few_unique_csv("benchmark_data/few_unique_10.csv",       std::ofstream::out);
 
-	std::string headers = "N,insertion,selection,bubble,merge,quick,hoare-quick,randomized-quick,heap\n";
+	std::string headers = "N,insertion,selection,bubble,merge,quick,hoare-quick,randomized-quick,heap,insertion_comp,selection_comp,bubble_comp,merge_comp,quick_comp,hoare-quick_comp,randomized-quick_comp,heap_comp\n";
 
 	unsorted_csv   << headers;
 	sorted_csv     << headers;
@@ -150,7 +150,15 @@ int main() {
 				     << results.quick_sort.unsorted.count()            << ","
 					 << results.hoare_quick_sort.unsorted.count()      << ","
 					 << results.randomized_quick_sort.unsorted.count() << ","      
-				     << results.heap_sort.unsorted.count()             << "\n";
+				     << results.heap_sort.unsorted.count()             << ","
+					 << results.insertion_sort.unsorted_count          << ","
+		 		     << results.selection_sort.unsorted_count          << ","
+				     << results.bubble_sort.unsorted_count             << ","
+				     << results.merge_sort.unsorted_count              << ","
+				     << results.quick_sort.unsorted_count              << ","
+					 << results.hoare_quick_sort.unsorted_count        << ","
+					 << results.randomized_quick_sort.unsorted_count   << ","      
+				     << results.heap_sort.unsorted_count               << "\n";
 
 		
 		sorted_csv << input_size                                   << ","
@@ -161,7 +169,15 @@ int main() {
 				   << results.quick_sort.sorted.count()            << ","
 				   << results.hoare_quick_sort.sorted.count()      << ","
 				   << results.randomized_quick_sort.sorted.count() << ","   
-				   << results.heap_sort.sorted.count()             << "\n";
+				   << results.heap_sort.sorted.count()             << ","
+				   << results.insertion_sort.sorted_count          << ","
+		 		   << results.selection_sort.sorted_count          << ","
+				   << results.bubble_sort.sorted_count             << ","
+				   << results.merge_sort.sorted_count              << ","
+				   << results.quick_sort.sorted_count              << ","
+				   << results.hoare_quick_sort.sorted_count        << ","
+				   << results.randomized_quick_sort.sorted_count   << ","   
+				   << results.heap_sort.sorted_count               << "\n";
 
 		reverse_csv << input_size                                    << ","
 		            << results.insertion_sort.rsorted.count()        << ","
@@ -171,7 +187,15 @@ int main() {
 				    << results.quick_sort.rsorted.count()            << ","
 					<< results.hoare_quick_sort.rsorted.count()      << ","
 					<< results.randomized_quick_sort.rsorted.count() << ","   
-				    << results.heap_sort.rsorted.count()             << "\n";
+				    << results.heap_sort.rsorted.count()             << ","
+					<< results.insertion_sort.rsorted_count          << ","
+		 		    << results.selection_sort.rsorted_count          << ","
+				    << results.bubble_sort.rsorted_count             << ","
+				    << results.merge_sort.rsorted_count              << ","
+				    << results.quick_sort.rsorted_count              << ","
+					<< results.hoare_quick_sort.rsorted_count        << ","
+					<< results.randomized_quick_sort.rsorted_count   << ","   
+				    << results.heap_sort.rsorted_count               << "\n";
 
 		psorted25_csv << input_size                                       << ","
 		              << results.insertion_sort.psorted_25.count()        << ","
@@ -181,7 +205,15 @@ int main() {
 				      << results.quick_sort.psorted_25.count()            << ","
 					  << results.hoare_quick_sort.psorted_25.count()      << ","
 					  << results.randomized_quick_sort.psorted_25.count() << ","   
-				      << results.heap_sort.psorted_25.count()             << "\n";
+				      << results.heap_sort.psorted_25.count()             << ","
+					  << results.insertion_sort.psorted_25_count          << ","
+		 		      << results.selection_sort.psorted_25_count          << ","
+				      << results.bubble_sort.psorted_25_count             << ","
+				      << results.merge_sort.psorted_25_count              << ","
+				      << results.quick_sort.psorted_25_count              << ","
+					  << results.hoare_quick_sort.psorted_25_count        << ","
+					  << results.randomized_quick_sort.psorted_25_count   << ","   
+				      << results.heap_sort.psorted_25_count               << "\n";
 
 		psorted50_csv << input_size                                       << ","
 		              << results.insertion_sort.psorted_50.count()        << ","
@@ -191,7 +223,15 @@ int main() {
 				      << results.quick_sort.psorted_50.count()            << ","
 					  << results.hoare_quick_sort.psorted_50.count()      << ","
 					  << results.randomized_quick_sort.psorted_50.count() << ","   
-				      << results.heap_sort.psorted_50.count()             << "\n";
+				      << results.heap_sort.psorted_50.count()             << ","
+					  << results.insertion_sort.psorted_50_count          << ","
+		 		      << results.selection_sort.psorted_50_count          << ","
+				      << results.bubble_sort.psorted_50_count             << ","
+				      << results.merge_sort.psorted_50_count              << ","
+				      << results.quick_sort.psorted_50_count              << ","
+					  << results.hoare_quick_sort.psorted_50_count        << ","
+					  << results.randomized_quick_sort.psorted_50_count   << ","   
+				      << results.heap_sort.psorted_50_count               << "\n";
 
 		psorted75_csv << input_size                                       << ","
 		              << results.insertion_sort.psorted_75.count()        << ","
@@ -201,7 +241,15 @@ int main() {
 				      << results.quick_sort.psorted_75.count()            << ","
 					  << results.hoare_quick_sort.psorted_75.count()      << ","
 					  << results.randomized_quick_sort.psorted_75.count() << ","   
-				      << results.heap_sort.psorted_75.count()             << "\n";
+				      << results.heap_sort.psorted_75.count()             << ","
+					  << results.insertion_sort.psorted_75_count          << ","
+		 		      << results.selection_sort.psorted_75_count          << ","
+				      << results.bubble_sort.psorted_75_count             << ","
+				      << results.merge_sort.psorted_75_count              << ","
+				      << results.quick_sort.psorted_75_count              << ","
+					  << results.hoare_quick_sort.psorted_75_count        << ","
+					  << results.randomized_quick_sort.psorted_75_count   << ","   
+				      << results.heap_sort.psorted_75_count               << "\n";
 
 		few_unique_csv << input_size                                       << ","
 		               << results.insertion_sort.few_unique.count()        << ","
@@ -211,7 +259,15 @@ int main() {
 				       << results.quick_sort.few_unique.count()            << ","
 					   << results.hoare_quick_sort.few_unique.count()      << ","
 					   << results.randomized_quick_sort.few_unique.count() << ","   
-				       << results.heap_sort.few_unique.count()             << "\n";
+				       << results.heap_sort.few_unique.count()             << ","
+					   << results.insertion_sort.few_unique_count          << ","
+		 		       << results.selection_sort.few_unique_count          << ","
+				       << results.bubble_sort.few_unique_count             << ","
+				       << results.merge_sort.few_unique_count              << ","
+				       << results.quick_sort.few_unique_count              << ","
+					   << results.hoare_quick_sort.few_unique_count        << ","
+					   << results.randomized_quick_sort.few_unique_count   << ","   
+				       << results.heap_sort.few_unique_count               << "\n";
 
 		std::cout << std::endl;
 	}
